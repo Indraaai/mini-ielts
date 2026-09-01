@@ -1,18 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 import { useSpeakingStore } from "@/stores/speaking";
-import type { SpeakingResult } from "@/api/types";
+import type { SpeakingAttempt, SpeakingResult } from "@/api/types";
 
 import QuestionCard from "@/components/speaking/QuestionCard.vue";
-import EvaluationResult from "@/components/speaking/EvaluationResult.vue";
 
+const router = useRouter();
 const speakingStore = useSpeakingStore();
 
-const submittedResult = ref<SpeakingResult | null>(null);
+type SubmittedData = {
+  attempt: SpeakingAttempt;
+  result: SpeakingResult;
+};
 
-const handleSubmitted = (result: SpeakingResult) => {
-  submittedResult.value = result;
+const handleSubmitted = async (data: SubmittedData) => {
+  await router.push({
+    name: "result",
+    params: {
+      attemptId: data.attempt.id,
+    },
+  });
 };
 
 onMounted(() => {
@@ -46,9 +55,6 @@ onMounted(() => {
     >
       {{ speakingStore.error }}
     </div>
-
-    <!-- Result -->
-    <EvaluationResult v-else-if="submittedResult" :result="submittedResult" />
 
     <!-- Questions -->
     <div v-else-if="speakingStore.questions.length > 0" class="space-y-4">
