@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import AuthenticatedLayout from '@/components/layouts/AuthenticatedLayout.vue'
+
 const router = createRouter({
     history: createWebHistory(),
 
@@ -14,35 +16,30 @@ const router = createRouter({
         },
 
         {
-            path: '/speaking',
-            name: 'speaking',
-            component: () => import('@/views/SpeakingView.vue'),
-            meta: {
-                requiresAuth: true,
-            },
-        },
-
-        {
-            path: '/history',
-            name: 'history',
-            component: () => import('@/views/HistoryView.vue'),
-            meta: {
-                requiresAuth: true,
-            },
-        },
-
-        {
-            path: '/result/:attemptId',
-            name: 'result',
-            component: () => import('@/views/ResultView.vue'),
-            meta: {
-                requiresAuth: true,
-            },
-        },
-
-        {
             path: '/',
-            redirect: '/speaking',
+            component: AuthenticatedLayout,
+            meta: {
+                requiresAuth: true,
+            },
+            children: [
+                {
+                    path: 'speaking',
+                    name: 'speaking',
+                    component: () => import('@/views/SpeakingView.vue'),
+                },
+
+                {
+                    path: 'history',
+                    name: 'history',
+                    component: () => import('@/views/HistoryView.vue'),
+                },
+
+                {
+                    path: 'result/:attemptId',
+                    name: 'result',
+                    component: () => import('@/views/ResultView.vue'),
+                },
+            ],
         },
     ],
 })
