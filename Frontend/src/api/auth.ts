@@ -22,7 +22,7 @@ export const login = (data: LoginPayload) => {
 }
 
 export const getMe = () => {
-    return api.get<User>('/auth/me')
+    return api.get<{ user: User }>('/auth/me')
 }
 
 export const logout = () => {

@@ -50,7 +50,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await getMe()
 
-                this.user = response.data
+                this.user = response.data.user
             } catch (error) {
                 this.clearAuth()
                 throw error
