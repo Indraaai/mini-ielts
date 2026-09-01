@@ -31,6 +31,18 @@ class SpeakingAttempt extends Model
 
     public function result(): HasOne
     {
-        return $this->hasOne(SpeakingResult::class);
+        return $this->hasOne(
+            SpeakingResult::class,
+            'attempt_id'
+        );
+    }
+    // SpeakingResult.php
+
+    public function attempt(): BelongsTo
+    {
+        return $this->belongsTo(
+            SpeakingAttempt::class,
+            'attempt_id'
+        );
     }
 }
