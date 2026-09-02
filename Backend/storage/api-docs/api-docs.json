@@ -146,6 +146,179 @@
                     }
                 ]
             }
+        },
+        "/api/speaking/submit": {
+            "post": {
+                "tags": [
+                    "Speaking"
+                ],
+                "summary": "Submit and evaluate a speaking answer",
+                "description": "Submit a speaking answer for AI evaluation.",
+                "operationId": "f11a721d6b5b169a2f7c6daf75a190cb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "question_id",
+                                    "answer"
+                                ],
+                                "properties": {
+                                    "question_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "answer": {
+                                        "type": "string",
+                                        "example": "I really enjoy studying computer science because it allows me to solve problems and build useful applications."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Speaking answer evaluated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Speaking answer evaluated successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "attempt": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "question_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "answer": {
+                                                            "type": "string",
+                                                            "example": "I really enjoy studying computer science because it allows me to solve problems and build useful applications."
+                                                        },
+                                                        "submitted_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2026-09-01T14:37:44.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "result": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "attempt_id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "estimated_band": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": 6.5
+                                                        },
+                                                        "strengths": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "example": [
+                                                                "Directly answers the prompt with a clear and coherent main idea.",
+                                                                "Uses accurate, context-appropriate vocabulary."
+                                                            ]
+                                                        },
+                                                        "areas_to_improve": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "example": [
+                                                                "Extend the response with further details or examples.",
+                                                                "Use a broader variety of grammatical structures."
+                                                            ]
+                                                        },
+                                                        "feedback": {
+                                                            "type": "string",
+                                                            "example": "Your answer is clear, accurate, and uses topic-relevant language effectively."
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/speaking/questions": {
+            "get": {
+                "tags": [
+                    "Speaking Questions"
+                ],
+                "summary": "Get speaking questions",
+                "operationId": "36135aaaa0f0062c25e1a7c90c6b64f6",
+                "responses": {
+                    "200": {
+                        "description": "List of speaking questions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "part": {
+                                                        "type": "string",
+                                                        "example": "Part 1"
+                                                    },
+                                                    "topic": {
+                                                        "type": "string",
+                                                        "example": "Education"
+                                                    },
+                                                    "prompt": {
+                                                        "type": "string",
+                                                        "example": "Do you enjoy studying?"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -161,6 +334,14 @@
         {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "Speaking",
+            "description": "Speaking"
+        },
+        {
+            "name": "Speaking Questions",
+            "description": "Speaking Questions"
         }
     ]
 }
