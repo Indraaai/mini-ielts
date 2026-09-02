@@ -37,10 +37,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <section>
+  <section class="mx-auto max-w-4xl">
     <!-- Header -->
     <div class="mb-8">
-      <h1 class="text-2xl font-bold text-gray-900">Speaking History</h1>
+      <p class="text-sm font-medium text-gray-500">Progress</p>
+
+      <h1 class="mt-1 text-3xl font-bold tracking-tight text-gray-900">
+        Speaking History
+      </h1>
 
       <p class="mt-2 text-sm text-gray-500">
         Review your previous speaking attempts and evaluations.
@@ -48,87 +52,125 @@ onMounted(() => {
     </div>
 
     <!-- Loading -->
-    <div v-if="loading" class="py-12 text-center text-sm text-gray-500">
-      Loading history...
+    <div
+      v-if="loading"
+      class="rounded-xl border border-gray-200 bg-white p-10 text-center shadow-sm"
+    >
+      <p class="text-sm text-gray-500">Loading your history...</p>
     </div>
 
     <!-- Error -->
     <div
       v-else-if="errorMessage"
-      class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600"
+      class="rounded-xl border border-red-200 bg-red-50 p-5"
     >
-      {{ errorMessage }}
+      <p class="text-sm font-medium text-red-700">
+        {{ errorMessage }}
+      </p>
     </div>
 
     <!-- Empty -->
     <div
       v-else-if="attempts.length === 0"
-      class="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm"
+      class="rounded-xl border border-gray-200 bg-white p-10 text-center shadow-sm"
     >
-      <h2 class="font-semibold text-gray-900">No speaking attempts yet</h2>
+      <div
+        class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100"
+      >
+        <span class="text-lg text-gray-500">?</span>
+      </div>
 
-      <p class="mt-2 text-sm text-gray-500">
-        Complete a speaking test to see your history here.
+      <h2 class="mt-4 text-lg font-semibold text-gray-900">No attempts yet</h2>
+
+      <p class="mx-auto mt-2 max-w-md text-sm text-gray-500">
+        Complete your first speaking test and your evaluation will appear here.
       </p>
+
+      <RouterLink
+        :to="{ name: 'speaking' }"
+        class="mt-6 inline-flex rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
+      >
+        Start Speaking Test
+      </RouterLink>
     </div>
 
-    <!-- History -->
+    <!-- History List -->
     <div v-else class="space-y-4">
       <article
         v-for="attempt in attempts"
         :key="attempt.id"
-        class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+        class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:border-gray-300"
       >
-        <!-- Attempt Header -->
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="text-xs font-medium text-gray-500">
-              {{ attempt.question.part }}
-            </p>
+        <!-- Card Header -->
+        <div class="flex items-start justify-between gap-6 p-6">
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <span
+                class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"
+              >
+                {{ attempt.question.part }}
+              </span>
 
-            <h2 class="mt-1 font-semibold text-gray-900">
+              <span class="text-xs text-gray-400">
+                {{ attempt.question.topic }}
+              </span>
+            </div>
+
+            <h2 class="mt-3 text-base font-semibold leading-6 text-gray-900">
               {{ attempt.question.prompt }}
             </h2>
-
-            <p class="mt-1 text-xs text-gray-400">
-              {{ formatDate(attempt.submitted_at) }}
-            </p>
           </div>
 
           <!-- Band -->
-          <div v-if="attempt.result" class="shrink-0 text-center">
-            <p class="text-xs text-gray-500">Band</p>
+          <div
+            v-if="attempt.result"
+            class="shrink-0 rounded-xl bg-gray-50 px-5 py-3 text-center"
+          >
+            <p class="text-xs font-medium text-gray-500">Band</p>
 
-            <p class="text-2xl font-bold text-gray-900">
+            <p class="mt-0.5 text-2xl font-bold text-gray-900">
               {{ attempt.result.estimated_band }}
             </p>
           </div>
         </div>
 
         <!-- Answer -->
-        <div class="mt-5 border-t border-gray-100 pt-5">
-          <p class="text-xs font-medium uppercase tracking-wide text-gray-400">
+        <div class="border-t border-gray-100 px-6 py-5">
+          <p
+            class="text-xs font-semibold uppercase tracking-wide text-gray-400"
+          >
             Your Answer
           </p>
 
-          <p class="mt-2 text-sm leading-relaxed text-gray-600">
+          <p class="mt-2 text-sm leading-6 text-gray-600">
             {{ attempt.answer }}
           </p>
         </div>
 
-        <!-- View Result -->
-        <div v-if="attempt.result" class="mt-5">
+        <!-- Footer -->
+        <div
+          class="flex items-center justify-between border-t border-gray-100 bg-gray-50 px-6 py-4"
+        >
+          <p class="text-xs text-gray-500">
+            {{ formatDate(attempt.submitted_at) }}
+          </p>
+
           <RouterLink
+            v-if="attempt.result"
             :to="{
               name: 'result',
               params: {
                 attemptId: attempt.id,
               },
             }"
-            class="text-sm font-medium text-gray-900 hover:underline"
+            class="text-sm font-semibold text-gray-900 hover:underline"
           >
-            View Evaluation →
+            View Result →
           </RouterLink>
+
+          <span v-else class="text-xs text-gray-400">
+            Evaluation unavailable
+          </span>
         </div>
       </article>
     </div>
