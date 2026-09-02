@@ -17,6 +17,23 @@ class SpeakingAttemptController extends Controller
         private SpeakingEvaluationService $speakingEvaluationService
     ) {}
 
+    #[OA\Get(
+        path: '/api/speaking/attempts',
+        summary: 'Get speaking attempt history',
+        description: 'Get all speaking attempts belonging to the authenticated user.',
+        tags: ['Speaking'],
+        security: [['bearerAuth' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'List of speaking attempts'
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthenticated'
+            ),
+        ]
+    )]
     public function index(Request $request): JsonResponse
     {
         $attempts = $this->speakingAttemptService->getByUserId(
@@ -171,6 +188,38 @@ class SpeakingAttemptController extends Controller
         ], 201);
     }
 
+
+    #[OA\Get(
+        path: '/api/speaking/attempts/{attemptId}',
+        summary: 'Get speaking attempt detail',
+        description: 'Get a specific speaking attempt and its evaluation result belonging to the authenticated user.',
+        tags: ['Speaking'],
+        security: [['bearerAuth' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'attemptId',
+                description: 'ID of the speaking attempt',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer'),
+                example: 1
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Speaking attempt detail'
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthenticated'
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Speaking attempt not found'
+            ),
+        ]
+    )]
     public function show(
         Request $request,
         int $attemptId
