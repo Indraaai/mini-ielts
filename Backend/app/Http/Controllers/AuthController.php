@@ -127,6 +127,22 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: '/api/auth/me',
+        summary: 'Get authenticated user',
+        tags: ['Authentication'],
+        security: [['bearerAuth' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Authenticated user'
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthenticated'
+            ),
+        ]
+    )]
     public function me(Request $request): JsonResponse
     {
         return response()->json([
@@ -134,6 +150,22 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: '/api/auth/logout',
+        summary: 'Logout authenticated user',
+        tags: ['Authentication'],
+        security: [['bearerAuth' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Logout successful'
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthenticated'
+            ),
+        ]
+    )]
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();

@@ -9,4 +9,10 @@ use OpenApi\Attributes as OA;
     title: 'Mini IELTS API',
     description: 'API for the Mini IELTS application.'
 )]
+#[OA\SecurityScheme(
+    securityScheme: 'bearerAuth',
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'Sanctum Token'
+)]
 class OpenApi {}
