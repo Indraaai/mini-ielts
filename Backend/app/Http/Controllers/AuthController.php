@@ -7,13 +7,13 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
     public function __construct(
         private AuthService $authService
-    ) {
-    }
+    ) {}
 
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -26,6 +26,42 @@ class AuthController extends Controller
             'user' => $user,
         ], 201);
     }
+
+    #[OA\Post(
+        path: '/api/auth/login',
+        summary: 'Login user',
+        tags: ['Authentication'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['email', 'password'],
+                properties: [
+                    new OA\Property(
+                        property: 'email',
+                        type: 'string',
+                        format: 'email',
+                        example: 'user@example.com'
+                    ),
+                    new OA\Property(
+                        property: 'password',
+                        type: 'string',
+                        format: 'password',
+                        example: 'password123'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Login successful'
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error'
+            ),
+        ]
+    )]
 
     public function login(LoginRequest $request): JsonResponse
     {
@@ -48,11 +84,11 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request): JsonResponse
-{
-    $request->user()->currentAccessToken()->delete();
+    {
+        $request->user()->currentAccessToken()->delete();
 
-    return response()->json([
-        'message' => 'Logout successful',
-    ]);
-}
+        return response()->json([
+            'message' => 'Logout successful',
+        ]);
+    }
 }
