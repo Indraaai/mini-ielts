@@ -36,13 +36,4 @@ class SpeakingAttempt extends Model
             'attempt_id'
         );
     }
-    // SpeakingResult.php
-
-    public function attempt(): BelongsTo
-    {
-        return $this->belongsTo(
-            SpeakingAttempt::class,
-            'attempt_id'
-        );
-    }
 }
