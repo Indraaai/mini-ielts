@@ -171,6 +171,84 @@ Route selain `/login` membutuhkan autentikasi pengguna.
 - [Dokumentasi Backend](Backend/README.md)
 - [Dokumentasi Frontend](Frontend/README.md)
 
+## Migration dan Seeder
+
+Migration Backend membuat tabel utama berikut:
+
+- `speaking_questions` untuk menyimpan pertanyaan IELTS Speaking
+- `speaking_attempts` untuk menyimpan jawaban pengguna
+- `speaking_results` untuk menyimpan hasil evaluasi
+
+Jalankan migration dari folder `Backend` dengan perintah:
+
+```bash
+php artisan migrate
+```
+
+Seeder pertanyaan contoh berada di `Backend/database/seeders/SpeakingQuestionSeeder.php` dan dipanggil oleh `DatabaseSeeder`. Seeder tersebut menyediakan 7 pertanyaan contoh dari Part 1, Part 2, dan Part 3 dengan topik Education, Hometown, Hobbies, Memorable Experience, Person You Admire, Education and Society, serta Technology.
+
+Untuk menjalankan seluruh migration sekaligus mengisi data contoh:
+
+```bash
+php artisan migrate --seed
+```
+
+Untuk mengulang database dari awal pada lingkungan development:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+## Automated Test
+
+Jalankan seluruh test Backend dari folder `Backend`:
+
+```bash
+php artisan test
+```
+
+Test utama tersedia di `Backend/tests/Feature/SpeakingAttemptApiTest.php` dan memeriksa:
+
+- Attempt dibatalkan ketika evaluasi Gemini gagal
+- Data attempt dan result tidak tersimpan ketika terjadi kegagalan evaluasi
+- Pengguna tidak dapat membuka attempt milik pengguna lain
+
+Test kegagalan Gemini menggunakan `Mockery` untuk mengganti `GeminiClient` dengan mock yang melempar `GeminiException`. Karena itu, test tersebut tidak memanggil API Gemini dan tidak membutuhkan internet atau API key aktif.
+
+Untuk menjalankan test tersebut saja:
+
+```bash
+php artisan test --filter SpeakingAttemptApiTest
+```
+
+## Cara Menjalankan Project
+
+1. Siapkan Backend:
+
+```bash
+cd Backend
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+```
+
+Isi `GEMINI_API_KEY` di `Backend/.env`, lalu jalankan:
+
+```bash
+php artisan serve
+```
+
+2. Buka terminal baru dan jalankan Frontend:
+
+```bash
+cd Frontend
+npm install
+npm run dev
+```
+
+3. Buka `http://localhost:5173` di browser. Frontend menggunakan API Backend pada `http://127.0.0.1:8000/api`.
+
 ## Pengalaman Deploy
 
 - Saya memiliki pengaaman deploy menggunakan layanan Cpanel Shared Hosting dan juga layanan Cloud Vercel, di intern sebelumnya saya mendeploy aplikasi web presesensi dan penilaian untk kebutuhan internal perusahaan, di proses deploy ini saya mulai dengan membuat database mysql , setup git di terminal Cpanel supaya update bisa langsung pull dari terminal dan tidak via upload file, setup cronjobs untuk melakukan generate pencatatan alfa otomatis, serta membuat subdomain aplikasinya, alur deploy project ini adalah perubahan di lokaldi push ke branch main github, lalu di terminal Cpanel tinggal pull branch main github dan perubahan langsung terjadi di production.
