@@ -170,3 +170,9 @@ Route selain `/login` membutuhkan autentikasi pengguna.
 
 - [Dokumentasi Backend](Backend/README.md)
 - [Dokumentasi Frontend](Frontend/README.md)
+
+## Pengalaman Deploy
+
+- Saya memiliki pengaaman deploy menggunakan layanan Cpanel Shared Hosting dan juga layanan Cloud Vercel, di intern sebelumnya saya mendeploy aplikasi web presesensi dan penilaian untk kebutuhan internal perusahaan, di proses deploy ini saya mulai dengan membuat database mysql , setup git di terminal Cpanel supaya update bisa langsung pull dari terminal dan tidak via upload file, setup cronjobs untuk melakukan generate pencatatan alfa otomatis, serta membuat subdomain aplikasinya, alur deploy project ini adalah perubahan di lokaldi push ke branch main github, lalu di terminal Cpanel tinggal pull branch main github dan perubahan langsung terjadi di production.
+
+- untuk deploy via vercel biasanya project yang saya deploy berbasis node js, bun, react vue next js dsb. karena sangat cepat dan efisien untuk adtaabse biasanay saya mengguaakn neon atau supabase.
