@@ -147,6 +147,112 @@
                 ]
             }
         },
+        "/api/speaking/attempts": {
+            "get": {
+                "tags": [
+                    "Speaking"
+                ],
+                "summary": "Get speaking attempt history",
+                "description": "Get all speaking attempts belonging to the authenticated user.",
+                "operationId": "ea5f1c28b05e07063590ce9bfe6fdb97",
+                "responses": {
+                    "200": {
+                        "description": "List of speaking attempts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "question": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "part": {
+                                                                "type": "string",
+                                                                "example": "Part 1"
+                                                            },
+                                                            "topic": {
+                                                                "type": "string",
+                                                                "example": "Education"
+                                                            },
+                                                            "prompt": {
+                                                                "type": "string",
+                                                                "example": "Do you enjoy studying?"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "answer": {
+                                                        "type": "string",
+                                                        "example": "I really enjoy studying computer science."
+                                                    },
+                                                    "submitted_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-09-01T14:37:44.000000Z"
+                                                    },
+                                                    "result": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 3
+                                                            },
+                                                            "attempt_id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "estimated_band": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 6.5
+                                                            },
+                                                            "strengths": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "areas_to_improve": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "feedback": {
+                                                                "type": "string",
+                                                                "example": "Your answer is clear and uses relevant vocabulary effectively."
+                                                            }
+                                                        },
+                                                        "type": "object",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/speaking/submit": {
             "post": {
                 "tags": [
@@ -255,6 +361,121 @@
                                                         }
                                                     },
                                                     "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/speaking/attempts/{attemptId}": {
+            "get": {
+                "tags": [
+                    "Speaking"
+                ],
+                "summary": "Get speaking attempt detail",
+                "description": "Get a specific speaking attempt and its evaluation result belonging to the authenticated user.",
+                "operationId": "0e23e076508eafcaecef13c8e59f2f12",
+                "parameters": [
+                    {
+                        "name": "attemptId",
+                        "in": "path",
+                        "description": "ID of the speaking attempt",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Speaking attempt detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "question": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "part": {
+                                                            "type": "string",
+                                                            "example": "Part 1"
+                                                        },
+                                                        "topic": {
+                                                            "type": "string",
+                                                            "example": "Education"
+                                                        },
+                                                        "prompt": {
+                                                            "type": "string",
+                                                            "example": "Do you enjoy studying?"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "answer": {
+                                                    "type": "string",
+                                                    "example": "I really enjoy studying computer science."
+                                                },
+                                                "submitted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-09-01T14:37:44.000000Z"
+                                                },
+                                                "result": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "attempt_id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "estimated_band": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": 6.5
+                                                        },
+                                                        "strengths": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "areas_to_improve": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "feedback": {
+                                                            "type": "string",
+                                                            "example": "Your answer is clear and uses relevant vocabulary effectively."
+                                                        }
+                                                    },
+                                                    "type": "object",
+                                                    "nullable": true
                                                 }
                                             },
                                             "type": "object"

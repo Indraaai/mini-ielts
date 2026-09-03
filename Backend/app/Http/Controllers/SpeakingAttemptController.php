@@ -26,11 +26,101 @@ class SpeakingAttemptController extends Controller
         responses: [
             new OA\Response(
                 response: 200,
-                description: 'List of speaking attempts'
-            ),
-            new OA\Response(
-                response: 401,
-                description: 'Unauthenticated'
+                description: 'List of speaking attempts',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(
+                                        property: 'id',
+                                        type: 'integer',
+                                        example: 2
+                                    ),
+                                    new OA\Property(
+                                        property: 'question',
+                                        properties: [
+                                            new OA\Property(
+                                                property: 'id',
+                                                type: 'integer',
+                                                example: 1
+                                            ),
+                                            new OA\Property(
+                                                property: 'part',
+                                                type: 'string',
+                                                example: 'Part 1'
+                                            ),
+                                            new OA\Property(
+                                                property: 'topic',
+                                                type: 'string',
+                                                example: 'Education'
+                                            ),
+                                            new OA\Property(
+                                                property: 'prompt',
+                                                type: 'string',
+                                                example: 'Do you enjoy studying?'
+                                            ),
+                                        ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(
+                                        property: 'answer',
+                                        type: 'string',
+                                        example: 'I really enjoy studying computer science.'
+                                    ),
+                                    new OA\Property(
+                                        property: 'submitted_at',
+                                        type: 'string',
+                                        format: 'date-time',
+                                        example: '2026-09-01T14:37:44.000000Z'
+                                    ),
+                                    new OA\Property(
+                                        property: 'result',
+                                        nullable: true,
+                                        properties: [
+                                            new OA\Property(
+                                                property: 'id',
+                                                type: 'integer',
+                                                example: 3
+                                            ),
+                                            new OA\Property(
+                                                property: 'attempt_id',
+                                                type: 'integer',
+                                                example: 2
+                                            ),
+                                            new OA\Property(
+                                                property: 'estimated_band',
+                                                type: 'number',
+                                                format: 'float',
+                                                example: 6.5
+                                            ),
+                                            new OA\Property(
+                                                property: 'strengths',
+                                                type: 'array',
+                                                items: new OA\Items(type: 'string')
+                                            ),
+                                            new OA\Property(
+                                                property: 'areas_to_improve',
+                                                type: 'array',
+                                                items: new OA\Items(type: 'string')
+                                            ),
+                                            new OA\Property(
+                                                property: 'feedback',
+                                                type: 'string',
+                                                example: 'Your answer is clear and uses relevant vocabulary effectively.'
+                                            ),
+                                        ],
+                                        type: 'object'
+                                    ),
+                                ],
+                                type: 'object'
+                            )
+                        ),
+                    ],
+                    type: 'object'
+                )
             ),
         ]
     )]
@@ -208,15 +298,102 @@ class SpeakingAttemptController extends Controller
         responses: [
             new OA\Response(
                 response: 200,
-                description: 'Speaking attempt detail'
-            ),
-            new OA\Response(
-                response: 401,
-                description: 'Unauthenticated'
-            ),
-            new OA\Response(
-                response: 404,
-                description: 'Speaking attempt not found'
+                description: 'Speaking attempt detail',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            properties: [
+                                new OA\Property(
+                                    property: 'id',
+                                    type: 'integer',
+                                    example: 2
+                                ),
+                                new OA\Property(
+                                    property: 'question',
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'id',
+                                            type: 'integer',
+                                            example: 1
+                                        ),
+                                        new OA\Property(
+                                            property: 'part',
+                                            type: 'string',
+                                            example: 'Part 1'
+                                        ),
+                                        new OA\Property(
+                                            property: 'topic',
+                                            type: 'string',
+                                            example: 'Education'
+                                        ),
+                                        new OA\Property(
+                                            property: 'prompt',
+                                            type: 'string',
+                                            example: 'Do you enjoy studying?'
+                                        ),
+                                    ],
+                                    type: 'object'
+                                ),
+                                new OA\Property(
+                                    property: 'answer',
+                                    type: 'string',
+                                    example: 'I really enjoy studying computer science.'
+                                ),
+                                new OA\Property(
+                                    property: 'submitted_at',
+                                    type: 'string',
+                                    format: 'date-time',
+                                    example: '2026-09-01T14:37:44.000000Z'
+                                ),
+                                new OA\Property(
+                                    property: 'result',
+                                    nullable: true,
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'id',
+                                            type: 'integer',
+                                            example: 3
+                                        ),
+                                        new OA\Property(
+                                            property: 'attempt_id',
+                                            type: 'integer',
+                                            example: 2
+                                        ),
+                                        new OA\Property(
+                                            property: 'estimated_band',
+                                            type: 'number',
+                                            format: 'float',
+                                            example: 6.5
+                                        ),
+                                        new OA\Property(
+                                            property: 'strengths',
+                                            type: 'array',
+                                            items: new OA\Items(
+                                                type: 'string'
+                                            )
+                                        ),
+                                        new OA\Property(
+                                            property: 'areas_to_improve',
+                                            type: 'array',
+                                            items: new OA\Items(
+                                                type: 'string'
+                                            )
+                                        ),
+                                        new OA\Property(
+                                            property: 'feedback',
+                                            type: 'string',
+                                            example: 'Your answer is clear and uses relevant vocabulary effectively.'
+                                        ),
+                                    ],
+                                    type: 'object'
+                                ),
+                            ],
+                            type: 'object'
+                        ),
+                    ],
+                    type: 'object'
+                )
             ),
         ]
     )]
